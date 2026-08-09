@@ -1,0 +1,3 @@
+export default defineEventHandler(async () => {
+  // TODO: Add JWT to event context...
+})
