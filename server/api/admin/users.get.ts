@@ -16,10 +16,10 @@ export default defineEventHandler(async (event) => {
     where: (t, { and, eq, sql }) => {
       const filters: SQL[] = []
       if (locale) {
-        filters.push(eq(sql`${schema.user.settings}->>'$.locale'`, locale))
+        filters.push(eq(sql`${t.settings}->>'$.locale'`, locale))
       }
       if (currency) {
-        filters.push(eq(sql`${schema.user.settings}->>'$.currency'`, currency))
+        filters.push(eq(sql`${t.settings}->>'$.currency'`, currency))
       }
 
       if (filters.length > 0) {
