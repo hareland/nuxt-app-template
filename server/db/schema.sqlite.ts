@@ -21,13 +21,13 @@ export const user = sqliteTable('users', {
   id: domainId('user_'),
   name: text('name'),
   email: text('email').notNull().unique(),
-  lastLoginAt: integer('last_login_at', { mode: 'timestamp' }),
-  emailVerifiedAt: integer('email_verified_at', { mode: 'timestamp' }),
   role: text('type', { enum: userRoles }).notNull().$type<UserRole>().default('user'),
   settings: text('settings', { mode: 'json' }).$type<{
     locale?: string | null
     currency?: string | null
   }>(),
+  lastLoginAt: integer('last_login_at', { mode: 'timestamp' }),
+  emailVerifiedAt: integer('email_verified_at', { mode: 'timestamp' }),
   acceptedTermsAt: integer('accepted_terms_at', { mode: 'timestamp' }),
   acceptedPrivacyAt: integer('accepted_privacy_at', { mode: 'timestamp' }),
   ...withTimestamps,
