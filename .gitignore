@@ -26,3 +26,6 @@ logs
 # Playwright
 playwright-report/
 test-results/
+
+# Certs should not be committed
+*.pem
