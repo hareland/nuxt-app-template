@@ -19,25 +19,39 @@ const providers = computed<ButtonProps[]>(() => {
   ]
 
   if (isSupported.value) {
-    items.push({
-      label: 'Passkey',
-      icon: 'i-lucide-fingerprint',
-      variant: 'outline',
-      onClick: async () => {
-        const authenticated = await passkeyModal.open()
-        return navigateTo(authenticated ? '/app' : '/login')
-      },
-    })
+    const { passkey } = useAppConfig().auth
+    if (passkey) {
+      items.push({
+        label: 'Passkey',
+        icon: 'i-lucide-fingerprint',
+        variant: 'outline',
+        onClick: async () => {
+          const authenticated = await passkeyModal.open()
+          return navigateTo(authenticated ? '/app' : '/login')
+        },
+      })
+    }
   }
 
   if (isDevelopment.value) {
-    items.push({
-      label: 'Development User',
-      to: '/auth/development',
-      icon: 'i-lucide-terminal-square',
-      variant: 'outline',
-      external: true,
-    })
+    const { development, custom } = useAppConfig().auth
+    if (development) {
+      items.push({
+        label: 'Development User',
+        to: '/auth/development',
+        icon: 'i-lucide-terminal-square',
+        variant: 'outline',
+        external: true,
+      })
+    }
+    if (custom) {
+      items.push({
+        label: 'Custom User',
+        icon: 'i-lucide-terminal-square',
+        variant: 'outline',
+        external: true,
+      })
+    }
   }
 
   return items
