@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useFooter } from '~/composables/useFooter.ts'
+
 const { loggedIn } = useUserSession()
+const { icon } = useFooter()
 </script>
 
 <template>
@@ -29,7 +32,7 @@ const { loggedIn } = useUserSession()
       <slot />
     </UMain>
 
-    <USeparator icon="i-simple-icons-nuxtdotjs" />
+    <USeparator :icon="icon" />
 
     <AppFooter />
   </div>

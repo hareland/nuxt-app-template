@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useFooter } from '~/composables/useFooter.ts'
+
+const { icon } = useFooter()
 </script>
 
 <template>
@@ -19,7 +22,7 @@
       <slot />
     </UMain>
 
-    <USeparator icon="i-simple-icons-nuxtdotjs" />
+    <USeparator :icon="icon" />
     <AppFooter />
   </div>
 </template>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { ButtonProps, NavigationMenuItem, KbdProps } from '@nuxt/ui'
 import { AppSearchButton } from '#components'
+import { useFooter } from '~/composables/useFooter.ts'
 
 const { user } = useUserSession()
 const createMenuOpen = ref(false)
+const { icon: footerIcon } = useFooter()
 
 type ActionWithKbd = (ButtonProps & { kbds?: KbdProps['value'][] })
 const headerActions = computed<ActionWithKbd[]>(() => [
@@ -87,7 +89,7 @@ const navigationItems = computed<NavigationMenuItem[][]>(() => {
       <slot />
     </UMain>
 
-    <USeparator icon="i-simple-icons-nuxtdotjs" />
+    <USeparator :icon="footerIcon" />
 
     <AppFooter />
   </div>

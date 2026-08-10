@@ -16,4 +16,7 @@ export default defineAppConfig({
   search: {
     kbds: ['/'],
   },
+  footer: {
+    icon: 'i-simple-icons-nuxtdotjs',
+  },
 })
