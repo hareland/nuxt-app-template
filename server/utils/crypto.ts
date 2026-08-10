@@ -3,6 +3,14 @@ import { publicEncrypt, privateDecrypt, createCipheriv, createDecipheriv, random
 let publicKey: string | null = null
 let privateKey: string | null = null
 
+export function initEncryptionKeyConfig() {
+  const config = useRuntimeConfig()
+  initEncryptionKeys({
+    publicKey: config.publicKey,
+    privateKey: config.privateKey,
+  })
+}
+
 export function initEncryptionKeys(keys: { publicKey: string, privateKey: string }) {
   publicKey = keys.publicKey
   privateKey = keys.privateKey
@@ -17,7 +25,7 @@ function requireKeys() {
 
 const RSA_PADDING = { padding: constants.RSA_PKCS1_OAEP_PADDING, oaepHash: 'sha256' }
 
-export function encryptSync(plaintext: unknown): string {
+export function encryptSync<T>(plaintext: T): string {
   const { publicKey } = requireKeys()
 
   // 1. Random per-record AES key + IV
@@ -41,7 +49,7 @@ export function encryptSync(plaintext: unknown): string {
   })
 }
 
-export function decryptSync(raw: string): unknown {
+export function decryptSync<R>(raw: string): R {
   const { privateKey } = requireKeys()
   const { ct, iv, tag, wk } = JSON.parse(raw)
 
@@ -58,7 +66,7 @@ export function decryptSync(raw: string): unknown {
     decipher.final(),
   ])
 
-  return JSON.parse(decrypted.toString('utf8'))
+  return JSON.parse(decrypted.toString('utf8')) as R
 }
 
 export const useEncryption = () => {

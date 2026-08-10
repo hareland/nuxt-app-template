@@ -1,7 +1,5 @@
+import { initEncryptionKeyConfig } from '#server/utils/crypto.ts'
+
 export default defineNitroPlugin(() => {
-  const config = useRuntimeConfig()
-  initEncryptionKeys({
-    publicKey: config.publicKey,
-    privateKey: config.privateKey,
-  })
+  initEncryptionKeyConfig()
 })
