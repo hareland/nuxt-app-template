@@ -1,4 +1,4 @@
-import { db, schema } from '@nuxthub/db'
+import { db } from '@nuxthub/db'
 import type { SQL } from 'drizzle-orm'
 import { z } from 'zod/v4'
 
