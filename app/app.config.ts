@@ -19,4 +19,9 @@ export default defineAppConfig({
   footer: {
     icon: 'i-simple-icons-nuxtdotjs',
   },
+  auth: {
+    passkey: true,
+    development: true,
+    custom: true,
+  },
 })
