@@ -2,6 +2,7 @@ import type { UserInsert } from '@nuxthub/db/schema'
 import { createUser } from '#server/utils/user.ts'
 import { db, schema } from '@nuxthub/db'
 import { createLogger } from '#shared/utils/logger.ts'
+import { objectPick } from '@vueuse/core'
 
 export default defineTask({
   meta: {
@@ -57,6 +58,12 @@ export default defineTask({
     const userIdMappedAccounts = Object.fromEntries(
       createdAccounts.map(account => [account.userId!, account]),
     )
+
+    if (import.meta.dev && createdUsers.length > 0) {
+      logger.info('Created users: ', createdUsers.map((user) => {
+        return `${user.id}: ${JSON.stringify(objectPick(user, ['email', 'name', 'role', 'settings']))}`
+      }))
+    }
 
     return {
       result: {
