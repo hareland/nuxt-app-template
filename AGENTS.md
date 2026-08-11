@@ -17,7 +17,7 @@ Guidance for AI coding agents (and humans) working in this workspace app.
 ./server/**                   Server-specific code (Nitro/server context only)
 ./server/db/schema.sqlite.ts  SQLite Drizzle database schema
 ./server/db/migrations/**     SQLite Drizzle database migrations
-./server/tasks/**             Server-side tasks (cron jobs, background jobs, etc.)
+./server/tasks/**             Server-side tasks (cron jobs, etc.)
 ./**/utils/**                 Utility functions
 ./shared/schema/**            Zod schemas for shared types and auto-generated forms
 ./modules/**                  Nuxt modules
