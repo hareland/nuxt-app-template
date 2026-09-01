@@ -4,7 +4,6 @@ import { relations } from 'drizzle-orm'
 import type { UserRole } from '#shared/schema'
 import { userRoles } from '#shared/schema'
 import { createDomainId } from '#shared/utils'
-import { decryptSync, encryptSync } from '#server/utils/crypto'
 
 const withTimestamps = {
   createdAt: integer({ mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
@@ -16,20 +15,6 @@ const withTimestamps = {
 
 const domainId = (prefix?: string) => {
   return text().primaryKey().$defaultFn(() => createDomainId(prefix))
-}
-
-export function encrypted<TData extends Record<string, unknown> | string>() {
-  return customType<{ data: TData, driverData: string }>({
-    dataType() {
-      return 'text'
-    },
-    toDriver(value) {
-      return encryptSync(value)
-    },
-    fromDriver(value) {
-      return decryptSync<TData>(value)
-    },
-  })
 }
 
 export const user = sqliteTable('users', {

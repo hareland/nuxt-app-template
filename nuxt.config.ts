@@ -26,6 +26,13 @@ export default defineNuxtConfig({
         '*/5 * * * *': ['test:command'],
       },
     },
+    hub: {
+      db: {
+        dialect: 'sqlite',
+        casing: 'snake_case',
+        applyMigrationsDuringBuild: false,
+      },
+    },
   },
 
   devtools: {
@@ -49,7 +56,7 @@ export default defineNuxtConfig({
     '/login': { appLayout: 'auth' },
   },
 
-  compatibilityDate: '2026-06-30',
+  compatibilityDate: '2026-08-30',
   nitro: {
     experimental: {
       tasks: true,

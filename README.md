@@ -56,4 +56,23 @@ Locally preview production build:
 pnpm preview
 ```
 
+
+## Docker
+
+This repo comes with a `Dockerfile` and `monorepo.Dockerfile` to help you deploy your application to a Docker container.
+All repositories and apps have custom setup in this area, so feel free to either replace `Dockerfile` with `monorepo.Dockerfile` to fit your usecase.
+The monorepo file probably needs to be edited to work properly.
+
+
+### Build
+```bash
+docker build -f Dockerfile -t nuxt-app-template:latest .
+```
+
+### Run
+```bash
+docker run -p 3000:3000 nuxt-app-template:latest
+```
+
+
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

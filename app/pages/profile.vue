@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import { titleCase } from 'scule'
+import { useUserPasskeysQueryOptions } from '~/store/queries/user.ts'
+import { useDeleteUserPasskey } from '~/store/mutations/user.ts'
 
 const { user } = useUserSession()
 const { register, isSupported } = useWebAuthn()
 const toast = useToast()
 const addingPasskey = ref(false)
 const deletingPasskeyIds = ref<Set<string>>(new Set())
-
-interface PasskeyListItem {
-  id: string
-  backedUp: boolean
-  transports?: string[]
-  createdAt: string
-}
+const { deletePasskey } = useDeleteUserPasskey()
+const confirmDialog = useConfirmDialog()
 
 const formatPasskeyId = (id: string) => {
   if (id.length <= 24) {
@@ -22,8 +19,8 @@ const formatPasskeyId = (id: string) => {
   return `${id.slice(0, 12)}…${id.slice(-8)}`
 }
 
-const { data: passkeys, pending: passkeysPending, refresh: refreshPasskeys } = await useFetch<PasskeyListItem[]>('/api/profile/passkeys', {
-  default: () => [],
+const { data: passkeys, isLoading: passkeysPending, refresh: refreshPasskeys } = useQuery(() => {
+  return useUserPasskeysQueryOptions()
 })
 
 const addPasskey = async () => {
@@ -53,17 +50,31 @@ const addPasskey = async () => {
   }
 }
 
-const deletePasskey = async (id: string) => {
+const handleDeletePasskey = async (id: string) => {
   if (deletingPasskeyIds.value.has(id)) {
     return
   }
 
+  // double check:
+  const shouldDelete = await confirmDialog({
+    title: 'Remove Passkey',
+    description: 'Are you sure you want to delete this Passkey? This action cannot be undone.',
+  })
+
+  if (!shouldDelete) {
+    toast.add({
+      title: 'Passkey not removed',
+      description: 'The passkey was not removed from your account.',
+      color: 'info',
+      icon: 'i-lucide-info',
+    })
+    return
+  }
+
+  // actually do some work:
   deletingPasskeyIds.value.add(id)
   try {
-    await $fetch(`/api/profile/passkeys/${id}`, {
-      method: 'DELETE',
-    })
-    await refreshPasskeys()
+    await deletePasskey(id)
     toast.add({
       title: 'Passkey removed',
       description: 'The passkey was removed from your account.',
@@ -181,7 +192,7 @@ const deletePasskey = async (id: string) => {
                   :aria-label="`Remove passkey ${formatPasskeyId(passkey.id)}`"
                   :loading="deletingPasskeyIds.has(passkey.id)"
                   :disabled="deletingPasskeyIds.has(passkey.id)"
-                  @click="deletePasskey(passkey.id)"
+                  @click="handleDeletePasskey(passkey.id)"
                 />
               </div>
             </UCard>

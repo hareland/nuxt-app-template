@@ -6,3 +6,4 @@ allowBuilds:
   vue-demi: false
 minimumReleaseAgeExclude:
   - '@iconify-json/lucide@1.2.123'
+  - '@internationalized/date@3.12.4'
